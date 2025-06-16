@@ -1,0 +1,5 @@
+2025-04-18 15:10:59,553 - INFO - Connection from IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0
+2025-04-18 15:17:59,663 - ERROR - Error fetching IP information: HTTPSConnectionPool(host='ipinfo.io', port=443): Max retries exceeded with url: /127.0.0.1/json (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001F73C3FA750>, 'Connection to ipinfo.io timed out. (connect timeout=10)'))
+2025-04-18 15:17:59,664 - INFO - Connection from IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0
+2025-04-18 15:28:36,443 - ERROR - Error fetching IP information: HTTPSConnectionPool(host='ipinfo.io', port=443): Max retries exceeded with url: /127.0.0.1/json (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001D20CEE7A50>, 'Connection to ipinfo.io timed out. (connect timeout=10)'))
+2025-04-18 15:28:36,444 - INFO - Connection from IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0

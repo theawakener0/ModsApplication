@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Application!</h1>
+        <p>Thank you for visiting. This application helps manage moderator applications.</p>
+        <p>If you are interested in becoming a moderator, please proceed to the application form:</p>
+        <div class="apply-link mt-20">
+            <a href="{{ url_for('moderator_application') }}">Apply for Moderator</a>
+        </div>
+
+    </div>
+</body>
+</html>
+

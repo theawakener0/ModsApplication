@@ -1,0 +1,204 @@
+2025-04-25 21:33:25,275 - WARNING - HTTP error 403 fetching asn for 127.0.0.1: Forbidden
+2025-04-25 21:33:25,580 - WARNING - HTTP error 403 fetching carrier for 127.0.0.1: Forbidden
+2025-04-25 21:33:25,885 - WARNING - HTTP error 403 fetching company for 127.0.0.1: Forbidden
+2025-04-25 21:33:26,162 - WARNING - HTTP error 403 fetching privacy for 127.0.0.1: Forbidden
+2025-04-25 21:33:26,466 - WARNING - HTTP error 403 fetching abuse for 127.0.0.1: Forbidden
+2025-04-25 21:33:26,467 - INFO - Visit to /: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-04-25 21:33:27,023 - INFO - Successfully sent detailed log for IP 127.0.0.1 to second Discord webhook.
+2025-04-25 21:34:02,863 - WARNING - HTTP error 403 fetching asn for 127.0.0.1: Forbidden
+2025-04-25 21:34:03,154 - WARNING - HTTP error 403 fetching carrier for 127.0.0.1: Forbidden
+2025-04-25 21:34:03,474 - WARNING - HTTP error 403 fetching company for 127.0.0.1: Forbidden
+2025-04-25 21:34:03,794 - WARNING - HTTP error 403 fetching privacy for 127.0.0.1: Forbidden
+2025-04-25 21:34:04,113 - WARNING - HTTP error 403 fetching abuse for 127.0.0.1: Forbidden
+2025-04-25 21:34:04,114 - INFO - Application submission attempt from: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-04-25 21:34:04,118 - INFO - Application from 3bkareno_gamer saved to applications.json
+2025-04-25 21:34:04,476 - ERROR - Failed to fetch Discord avatar hash for 728323287326916689: 401 Client Error: Unauthorized for url: https://discord.com/api/v10/users/728323287326916689
+Traceback (most recent call last):
+  File "c:\Users\Format Computer\Desktop\IP_LOG\ip_logger.py", line 164, in get_discord_avatar_hash
+    response.raise_for_status()
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://discord.com/api/v10/users/728323287326916689
+2025-04-25 21:34:04,891 - INFO - Successfully sent application from 3bkareno_gamer to Discord.
+2025-04-25 21:34:05,218 - ERROR - Failed to fetch Discord avatar hash for 728323287326916689: 401 Client Error: Unauthorized for url: https://discord.com/api/v10/users/728323287326916689
+Traceback (most recent call last):
+  File "c:\Users\Format Computer\Desktop\IP_LOG\ip_logger.py", line 164, in get_discord_avatar_hash
+    response.raise_for_status()
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://discord.com/api/v10/users/728323287326916689
+2025-04-25 21:34:05,845 - INFO - Successfully sent detailed log for IP 127.0.0.1 to second Discord webhook.
+2025-04-25 23:47:03,175 - INFO - Visit to /: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-04-25 23:47:07,580 - INFO - Successfully sent detailed log for IP 127.0.0.1 to second Discord webhook.
+2025-04-25 23:47:54,094 - INFO - Application submission attempt from: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-04-25 23:47:54,100 - INFO - Application from 3bkareno_gamer saved to applications.json
+2025-04-25 23:48:08,607 - ERROR - Failed to fetch Discord avatar URL for 728323287326916689: HTTPSConnectionPool(host='discord.com', port=443): Read timed out. (read timeout=10)
+Traceback (most recent call last):
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connection.py", line 652, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connection.py", line 805, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\util\ssl_.py", line 465, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\util\ssl_.py", line 509, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ssl.py", line 517, in wrap_socket
+    return self.sslsocket_class._create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ssl.py", line 1104, in _create
+    self.do_handshake()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ssl.py", line 1382, in do_handshake
+    self._sslobj.do_handshake()
+TimeoutError: _ssl.c:989: The handshake operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\util\util.py", line 39, in reraise
+    raise value
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 468, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=conn.timeout)
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 369, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='discord.com', port=443): Read timed out. (read timeout=10)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Format Computer\Desktop\IP_LOG\ip_logger.py", line 103, in get_discord_avatar_url
+    response = requests.get(url, headers=headers, timeout=10)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\adapters.py", line 713, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='discord.com', port=443): Read timed out. (read timeout=10)
+2025-04-25 23:48:23,316 - INFO - Successfully sent application from 3bkareno_gamer to Discord.
+2025-04-25 23:48:29,582 - ERROR - Failed to fetch Discord avatar URL for 728323287326916689: 401 Client Error: Unauthorized for url: https://discord.com/api/v10/users/728323287326916689
+Traceback (most recent call last):
+  File "c:\Users\Format Computer\Desktop\IP_LOG\ip_logger.py", line 104, in get_discord_avatar_url
+    response.raise_for_status()
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://discord.com/api/v10/users/728323287326916689
+2025-04-25 23:48:50,073 - ERROR - Timeout sending detailed log to second Discord webhook https://discord.com/api/webhooks/1365343834921369681/ep9-I4AsIdGdbTtTKG9PKPJQw0rmxuYfC7SLy8AcozAJLK4jvvapOdlcAvfvRRNC2G1L
+2025-06-14 03:58:37,562 - INFO - Visit to /: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-06-14 03:58:38,152 - INFO - Successfully sent detailed log for IP 127.0.0.1 to second Discord webhook.
+2025-06-14 04:02:14,480 - INFO - Application submission attempt from: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-06-14 04:02:14,485 - INFO - Application from kkdfcd saved to applications.json
+2025-06-14 04:02:45,751 - ERROR - Request error sending application to Discord: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-06-14 04:03:03,932 - ERROR - Failed to fetch Discord avatar URL for 728323287326916689: HTTPSConnectionPool(host='discord.com', port=443): Read timed out. (read timeout=10)
+Traceback (most recent call last):
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 536, in _make_request
+    response = conn.getresponse()
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connection.py", line 464, in getresponse
+    httplib_response = super().getresponse()
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1395, in getresponse
+    response.begin()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 325, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 286, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 706, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ssl.py", line 1314, in recv_into
+    return self.read(nbytes, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ssl.py", line 1166, in read
+    return self._sslobj.read(len, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\util\util.py", line 39, in reraise
+    raise value
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 538, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\urllib3\connectionpool.py", line 369, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='discord.com', port=443): Read timed out. (read timeout=10)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Format Computer\Desktop\IP_LOG\ip_logger.py", line 104, in get_discord_avatar_url
+    response = requests.get(url, headers=headers, timeout=10)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Format Computer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\requests\adapters.py", line 713, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='discord.com', port=443): Read timed out. (read timeout=10)
+2025-06-14 04:03:12,650 - ERROR - Request error sending detailed log to second Discord: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2025-06-14 04:04:34,184 - INFO - Visit to /: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-06-14 04:10:32,733 - INFO - Visit to /: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-06-14 04:10:33,294 - INFO - Successfully sent detailed log for IP 127.0.0.1 to second Discord webhook.
+2025-06-14 04:11:05,789 - INFO - Application submission attempt from: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-06-14 04:11:05,794 - INFO - Application from dervvr saved to applications.json
+2025-06-14 04:11:06,771 - INFO - Successfully sent application from dervvr to Discord.
+2025-06-14 04:11:07,964 - INFO - Successfully sent detailed log for IP 127.0.0.1 to second Discord webhook.
+2025-06-14 04:41:41,251 - INFO - Visit to /: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-06-14 04:41:41,742 - INFO - Successfully sent detailed log for IP 127.0.0.1 to second Discord webhook.
+2025-06-14 04:41:46,636 - INFO - Visit to /: IP: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0, Geo: {"ip": "127.0.0.1", "bogon": true}
+2025-06-14 04:41:47,105 - INFO - Successfully sent detailed log for IP 127.0.0.1 to second Discord webhook.

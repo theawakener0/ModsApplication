@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+     <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; color: #D8000C; background-color: #FFD2D2; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #D8000C; border-radius: 8px; background-color: #FFF; }
+        h1 { color: #D8000C; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ error_code }} - {{ error_title }}</h1>
+        <p>{{ error_message }}</p>
+        <p><a href="/">Go back</a></p>
+    </div>
+</body>
+</html>

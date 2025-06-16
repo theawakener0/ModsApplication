@@ -1,0 +1,247 @@
+/* Global Stylesheet - Discord Inspired */
+
+/* Color Palette Variables */
+:root {
+    --discord-dark-bg: #36393f;
+    --discord-mid-bg: #2f3136;
+    --discord-input-bg: #202225;
+    --discord-light-text: #dcddde;
+    --discord-gray-text: #b9bbbe;
+    --discord-white-text: #ffffff;
+    --discord-blurple: #5865F2; /* Updated Blurple */
+    --discord-green: #3ba55d;
+    --discord-red: #ed4245;
+    --discord-hover-blurple: #4752c4;
+    --discord-border: #202225;
+    --discord-focus-border: #7289da; /* Old Blurple for focus, often used */
+    --font-primary: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Base Styles */
+body {
+    font-family: var(--font-primary);
+    background-color: var(--discord-dark-bg);
+    color: var(--discord-light-text);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: var(--discord-mid-bg);
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
+    max-width: 700px;
+    width: 100%;
+    border: 1px solid var(--discord-border);
+    animation: fadeIn 0.5s ease-out;
+}
+
+h1 {
+    color: var(--discord-white-text);
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+h2, h3, h4, h5, h6 {
+    color: var(--discord-white-text);
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 1em; /* Adjusted from 1.1em for consistency */
+    color: var(--discord-light-text);
+    margin-bottom: 20px;
+}
+
+a {
+    color: var(--discord-blurple);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--discord-hover-blurple);
+    text-decoration: underline;
+}
+
+/* Enhanced Form Styles */
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--discord-gray-text);
+    font-size: 0.9em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--discord-input-bg);
+    border: 1px solid var(--discord-border);
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-size: 1em;
+    color: var(--discord-light-text);
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+textarea,
+select {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--discord-input-bg);
+    border: 1px solid var(--discord-border);
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    color: var(--discord-light-text);
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus {
+    border-color: var(--discord-focus-border);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.3);
+}
+textarea:focus,
+select:focus {
+    border-color: var(--discord-focus-border);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.3), 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: var(--font-primary);
+    line-height: 1.5;
+}
+
+/* Button Styles */
+button,
+.button-link {
+    background-color: var(--discord-blurple);
+    color: var(--discord-white-text);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    display: inline-block; /* Changed from block for flexibility */
+    width: auto; /* Changed from 100% */
+    transition: background-color 0.17s ease, transform 0.1s ease;
+    text-transform: capitalize;
+    text-align: center;
+    text-decoration: none; /* For .button-link */
+}
+
+button:hover,
+.button-link:hover {
+    background-color: var(--discord-hover-blurple);
+    transform: translateY(-1px); /* Slight lift on hover */
+    text-decoration: none; /* Ensure no underline on hover for buttons/links styled as buttons */
+}
+
+button:active,
+.button-link:active {
+    transform: translateY(0px); /* Press down effect */
+}
+
+/* Specific Link Styling (if not a button) */
+.apply-link a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--discord-green); /* Use green for apply */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.apply-link a:hover {
+    background-color: #2d8a4f; /* Darker green */
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+/* Success/Confirmation Styles */
+.success-container {
+    background-color: var(--discord-mid-bg);
+    padding: 40px 50px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid var(--discord-border);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.success-container h1 {
+    color: var(--discord-green);
+    margin-bottom: 20px;
+}
+
+.success-container p {
+    font-size: 1.1em;
+    color: var(--discord-light-text);
+    margin-bottom: 25px;
+}
+
+.success-container .icon {
+    font-size: 3em;
+    color: var(--discord-green);
+    margin-bottom: 15px;
+    animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Keyframes for Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
