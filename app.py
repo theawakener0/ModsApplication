@@ -1,11 +1,11 @@
 import os
 import logging
-import json
+import json # Added for json operations
+import requests # Ensure requests is imported (already used elsewhere)
 from datetime import datetime
 # Import render_template, redirect, url_for
 from flask import Flask, request, jsonify, render_template, redirect, url_for
-import requests
-import ipinfo # Added for ipinfo library
+# Removed: import ipinfo # No longer using the ipinfo library
 from dotenv import load_dotenv # For loading .env file
 
 # --- Load Environment Variables ---
@@ -53,41 +53,54 @@ try:
     file_handler = logging.FileHandler(LOG_FILE)
     file_handler.setLevel(LOG_LEVEL)
     file_handler.setFormatter(logging.Formatter(LOG_FORMAT))
-    app.logger.setLevel(LOG_LEVEL)
-    app.logger.addHandler(file_handler)
+    app.logger.setLevel(LOG_LEVEL) # Ensure app.logger is configured before adding handlers
+    # Check if handlers are already added to prevent duplication if this code runs multiple times (e.g. reloader)
+    if not any(isinstance(h, logging.FileHandler) and h.baseFilename == file_handler.baseFilename for h in app.logger.handlers):
+        app.logger.addHandler(file_handler)
     app.logger.propagate = False
 except IOError as e:
     print(f"Error setting up file logger for '{LOG_FILE}': {e}")
     print("Logging may not work correctly.")
 
 def get_ip_info(ip_address, api_token):
-    """Fetches comprehensive geolocation data for an IP address using the ipinfo library.
+    """Fetches comprehensive geolocation data for an IP address using the ipinfo.io API directly.
 
     Args:
         ip_address (str): The IP address to look up.
         api_token (str): The ipinfo.io API token (can be None for basic info).
 
     Returns:
-        ipinfo.handler.Details or None: An object containing IP information, or None on error.
-                                        Access data via attributes (e.g., details.city).
-                                        Use details.all to get a dictionary representation.
+        dict or None: A dictionary containing IP information, or None on error.
     """
     if not ip_address:
         app.logger.warning("get_ip_info called with no IP address.")
         return None
 
     try:
-        # Initialize the handler with the token
-        # The library handles caching and token usage internally
-        handler = ipinfo.getHandler(api_token)
+        url = f"https://ipinfo.io/{ip_address}/json"
+        params = {}
+        if api_token:
+            params['token'] = api_token
 
-        # Fetch details for the IP address
-        details = handler.getDetails(ip_address)
-        app.logger.debug(f"Successfully fetched IP info for {ip_address} using ipinfo library.")
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()  # Raise an exception for bad status codes (4xx or 5xx)
+        details = response.json()
+        app.logger.debug(f"Successfully fetched IP info for {ip_address} using direct API call to ipinfo.io.")
         return details
+    except requests.exceptions.Timeout:
+        app.logger.error(f"Timeout fetching IP info for {ip_address} from ipinfo.io API.")
+        return None
+    except requests.exceptions.HTTPError as e:
+        app.logger.error(f"HTTP error fetching IP info for {ip_address} from ipinfo.io API: {e.response.status_code} {e.response.reason}")
+        return None
+    except requests.exceptions.RequestException as e:
+        app.logger.error(f"Error fetching IP info for {ip_address} from ipinfo.io API: {e}", exc_info=True)
+        return None
+    except json.JSONDecodeError as e:
+        app.logger.error(f"Error decoding JSON response from ipinfo.io API for {ip_address}: {e}", exc_info=True)
+        return None
     except Exception as e:
-        # Catch potential exceptions from the library (e.g., network errors, invalid IP, API errors)
-        app.logger.error(f"Error fetching IP info for {ip_address} using ipinfo library: {e}", exc_info=True)
+        app.logger.error(f"Unexpected error fetching IP info for {ip_address} using direct API call: {e}", exc_info=True)
         return None
 
 # --- Helper Functions ---
@@ -255,18 +268,18 @@ def send_detailed_log_to_discord(log_details, application_data=None, webhook_url
 
     Args:
         log_details (dict): Dictionary containing log info. Expected keys:
-                            'ip_address', 'user_agent', 'ip_details' (ipinfo.handler.Details object), 'timestamp'.
+                            'ip_address', 'user_agent', 'ip_details' (dict from ipinfo.io), 'timestamp'.
         application_data (dict, optional): Data from a submitted application.
         webhook_url (str, optional): Specific webhook URL to use, otherwise defaults to SECOND_DISCORD_WEBHOOK_URL.
     """
-    target_webhook_url = webhook_url or SECOND_DISCORD_WEBHOOK_URL # Use provided or default second webhook
+    target_webhook_url = webhook_url or SECOND_DISCORD_WEBHOOK_URL
     if not target_webhook_url:
         app.logger.warning("Second Discord webhook URL not set. Skipping detailed log notification.")
         return False
 
     ip_address = log_details.get('ip_address', 'N/A')
     user_agent = log_details.get('user_agent', 'N/A')
-    ip_details_obj = log_details.get('ip_details') 
+    ip_details_dict = log_details.get('ip_details') # This is now a dictionary
     timestamp = log_details.get('timestamp', datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC'))
 
     # Initialize all IP information strings
@@ -281,103 +294,130 @@ def send_detailed_log_to_discord(log_details, application_data=None, webhook_url
     abuse_str = "_Not Available_"
     domains_str = "_Not Available_"
 
-    if ip_details_obj:
-        # --- Format Geo Info (existing logic) ---
+    if ip_details_dict: # Check if ip_details_dict is not None
+        # --- Format Geo Info ---
         geo_parts = []
-        city = getattr(ip_details_obj, 'city', None)
-        region = getattr(ip_details_obj, 'region', None)
-        country = getattr(ip_details_obj, 'country_name', None)
-        loc = getattr(ip_details_obj, 'loc', None)
-        org_isp = getattr(ip_details_obj, 'org', None) # Renamed from 'org' to avoid conflict
-        ip_timezone = getattr(ip_details_obj, 'timezone', None) # Renamed from 'timezone'
+        city = ip_details_dict.get('city')
+        region = ip_details_dict.get('region')
+        country_name = ip_details_dict.get('country_name') # ipinfo.io often returns 'country_name'
+        if not country_name: # Fallback to 'country' if 'country_name' is not present
+            country_code = ip_details_dict.get('country')
+            # You might want a mapping from country code to name if only code is available
+            country_name = country_code # Or use a mapping like pycountry if full name is critical
+        
+        loc = ip_details_dict.get('loc')
+        org_isp = ip_details_dict.get('org')
+        ip_timezone = ip_details_dict.get('timezone')
 
         if city: geo_parts.append(city)
         if region: geo_parts.append(region)
-        if country: geo_parts.append(country)
+        if country_name: geo_parts.append(country_name)
         geo_string = ", ".join(filter(None, geo_parts))
-        if loc: geo_string += f" ({loc})"
-        if ip_timezone: geo_string += f"\\nTimezone: {ip_timezone}" # Use ip_timezone
-        if org_isp: geo_string += f"\\nISP/Org: {org_isp}" # Use org_isp
-        if not geo_string: geo_string = "_Basic info unavailable_"
+        if loc: geo_string += f" (Loc: {loc})"
+        if ip_timezone: geo_string += f" (Timezone: {ip_timezone})"
+        if org_isp: geo_string += f" (ISP: {org_isp})"
+        if not geo_string: geo_string = "_Details Unavailable_"
 
-        # --- Format ASN Info (existing logic) ---
-        asn_details = getattr(ip_details_obj, 'asn', {})
-        if asn_details:
-            asn_num = asn_details.get('asn', 'N/A')
-            asn_name = asn_details.get('name', 'N/A')
-            asn_domain = asn_details.get('domain', '')
-            asn_route = asn_details.get('route', '')
-            asn_type = asn_details.get('type', '')
-            asn_parts = [f"AS{asn_num} {asn_name}"]
-            if asn_domain: asn_parts.append(f"Domain: {asn_domain}")
-            if asn_route: asn_parts.append(f"Route: {asn_route}")
-            if asn_type: asn_parts.append(f"Type: {asn_type}")
-            asn_string = "\\n".join(asn_parts)
+        # --- Format ASN Info ---
+        asn_details = ip_details_dict.get('asn', {})
+        asn_id = asn_details.get('asn')
+        asn_name = asn_details.get('name')
+        asn_domain = asn_details.get('domain')
+        asn_route = asn_details.get('route')
+        asn_type = asn_details.get('type')
+        asn_parts = []
+        if asn_id: asn_parts.append(f"ID: {asn_id}")
+        if asn_name: asn_parts.append(f"Name: {asn_name}")
+        if asn_domain: asn_parts.append(f"Domain: {asn_domain}")
+        if asn_route: asn_parts.append(f"Route: {asn_route}")
+        if asn_type: asn_parts.append(f"Type: {asn_type}")
+        asn_string = ", ".join(filter(None, asn_parts)) if asn_parts else "_Not Available_"
 
-        # --- Format Carrier Info (existing logic) ---
-        carrier_details = getattr(ip_details_obj, 'carrier', {})
-        if carrier_details:
-            carrier_name = carrier_details.get('name', 'N/A')
-            carrier_mcc = carrier_details.get('mcc', '')
-            carrier_mnc = carrier_details.get('mnc', '')
-            carrier_parts = [carrier_name]
-            if carrier_mcc: carrier_parts.append(f"MCC: {carrier_mcc}")
-            if carrier_mnc: carrier_parts.append(f"MNC: {carrier_mnc}")
-            carrier_string = " ".join(filter(None, carrier_parts))
+        # --- Format Carrier Info ---
+        carrier_details = ip_details_dict.get('carrier', {})
+        carrier_name = carrier_details.get('name')
+        carrier_mcc = carrier_details.get('mcc')
+        carrier_mnc = carrier_details.get('mnc')
+        carrier_parts = []
+        if carrier_name: carrier_parts.append(f"Name: {carrier_name}")
+        if carrier_mcc: carrier_parts.append(f"MCC: {carrier_mcc}")
+        if carrier_mnc: carrier_parts.append(f"MNC: {carrier_mnc}")
+        carrier_string = ", ".join(filter(None, carrier_parts)) if carrier_parts else "_Not Available_"
+        
+        # --- Format Company Info ---
+        company_details = ip_details_dict.get('company', {})
+        company_name = company_details.get('name')
+        company_domain = company_details.get('domain')
+        company_type = company_details.get('type')
+        company_parts = []
+        if company_name: company_parts.append(f"Name: {company_name}")
+        if company_domain: company_parts.append(f"Domain: {company_domain}")
+        if company_type: company_parts.append(f"Type: {company_type}")
+        company_string = ", ".join(filter(None, company_parts)) if company_parts else "_Not Available_"
 
-        # --- Format Company Info (existing logic) ---
-        company_details = getattr(ip_details_obj, 'company', {})
-        if company_details:
-            company_name = company_details.get('name', 'N/A')
-            company_domain = company_details.get('domain', '')
-            company_type = company_details.get('type', '')
-            company_parts = [company_name]
-            if company_domain: company_parts.append(f"Domain: {company_domain}")
-            if company_type: company_parts.append(f"Type: {company_type}")
-            company_string = " ".join(filter(None, company_parts))
+        # --- Format Privacy Info ---
+        privacy_details = ip_details_dict.get('privacy', {})
+        vpn = privacy_details.get('vpn', False)
+        proxy = privacy_details.get('proxy', False)
+        tor = privacy_details.get('tor', False)
+        relay = privacy_details.get('relay', False) # Changed from 'hosting' to 'relay' as per common ipinfo fields
+        hosting = privacy_details.get('hosting', False) # Added hosting, as it's a common field
+        service = privacy_details.get('service', '')
 
-        # --- Format Privacy Info (existing logic) ---
-        privacy_details = getattr(ip_details_obj, 'privacy', {})
-        if privacy_details:
-            privacy_flags_list = [] # Renamed from privacy_flags
-            if privacy_details.get('vpn'): privacy_flags_list.append('VPN')
-            if privacy_details.get('proxy'): privacy_flags_list.append('Proxy')
-            if privacy_details.get('tor'): privacy_flags_list.append('Tor')
-            if privacy_details.get('relay'): privacy_flags_list.append('Relay')
-            if privacy_details.get('hosting'): privacy_flags_list.append('Hosting')
-            service = privacy_details.get('service', '')
-            if service: privacy_flags_list.append(f"Service: {service}")
-            privacy_string = ", ".join(privacy_flags_list) if privacy_flags_list else "None Detected"
+        privacy_parts = []
+        if vpn: privacy_parts.append("VPN")
+        if proxy: privacy_parts.append("Proxy")
+        if tor: privacy_parts.append("Tor")
+        if relay: privacy_parts.append("Relay")
+        if hosting: privacy_parts.append("Hosting")
+        if service: privacy_parts.append(f"Service: {service}")
+        privacy_string = ", ".join(filter(None, privacy_parts)) if privacy_parts else "None Detected"
+        if not privacy_string and not any([vpn, proxy, tor, relay, hosting]): # if all flags are false
+             privacy_string = "Standard Connection (No VPN/Proxy/Tor/Relay/Hosting Detected)"
 
-        # --- New: Format Hostname, Anycast, Postal ---
-        hostname_str = getattr(ip_details_obj, 'hostname', '_Not Available_')
-        anycast_str = str(getattr(ip_details_obj, 'anycast', '_Not Available_'))
-        postal_str = getattr(ip_details_obj, 'postal', '_Not Available_')
 
-        # --- New: Format Abuse Contact ---
-        abuse_data = getattr(ip_details_obj, 'abuse', {})
-        abuse_contact_parts = []
-        if abuse_data.get('name'): abuse_contact_parts.append(f"Name: {abuse_data['name']}")
-        if abuse_data.get('address'): abuse_contact_parts.append(f"Address: {abuse_data['address']}") # Added address
-        if abuse_data.get('country'): abuse_contact_parts.append(f"Country: {abuse_data['country']}") # Added country
-        if abuse_data.get('email'): abuse_contact_parts.append(f"Email: {abuse_data['email']}")
-        if abuse_data.get('phone'): abuse_contact_parts.append(f"Phone: {abuse_data['phone']}")
-        if abuse_data.get('network'): abuse_contact_parts.append(f"Network: {abuse_data['network']}") # Added network
-        abuse_str = "\n".join(abuse_contact_parts) if abuse_contact_parts else "_Not Available_"
-        if len(abuse_str) > 1020: abuse_str = abuse_str[:1020] + "..."
+        # --- Other details ---
+        hostname_str = ip_details_dict.get('hostname', '_Not Available_')
+        anycast_str = "Yes" if ip_details_dict.get('anycast') else "No"
+        postal_str = ip_details_dict.get('postal', '_Not Available_')
 
-        # --- New: Format Associated Domains ---
-        domains_data = getattr(ip_details_obj, 'domains', {})
-        domain_list = domains_data.get('domains', [])
-        num_domains_to_show = 5 
-        domains_display_list = []
-        if domain_list:
-            domains_display_list.extend(domain_list[:num_domains_to_show])
-            if len(domain_list) > num_domains_to_show:
-                domains_display_list.append(f"...and {len(domain_list) - num_domains_to_show} more.")
-        domains_str = ", ".join(domains_display_list) if domains_display_list else "_Not Available_"
-        if not domain_list: domains_str = "_Not Available_" # Ensure it's not just "..." if list was empty
-        if len(domains_str) > 1020: domains_str = domains_str[:1020] + "..."
+        # --- Abuse Contact ---
+        abuse_details = ip_details_dict.get('abuse', {})
+        abuse_address = abuse_details.get('address')
+        abuse_country = abuse_details.get('country')
+        abuse_email = abuse_details.get('email')
+        abuse_name = abuse_details.get('name')
+        abuse_network = abuse_details.get('network')
+        abuse_phone = abuse_details.get('phone')
+        abuse_parts = []
+        if abuse_address: abuse_parts.append(f"Address: {abuse_address}")
+        # Add other abuse fields as needed, be mindful of length
+        if abuse_email: abuse_parts.append(f"Email: {abuse_email}")
+        if abuse_name: abuse_parts.append(f"Name: {abuse_name}")
+        abuse_str = "; ".join(filter(None, abuse_parts)) if abuse_parts else "_Not Available_"
+
+
+        # --- Domains ---
+        # The 'domains' field from ipinfo.io is usually a more complex object.
+        # Example: "domains": {"ip": "8.8.8.8", "total": 5, "domains": ["domain1.com", ...]}
+        # For simplicity, let's try to get the list of domains if available.
+        domains_data = ip_details_dict.get('domains')
+        if isinstance(domains_data, dict) and 'domains' in domains_data and isinstance(domains_data['domains'], list):
+            domains_list = domains_data['domains'][:5] # Get up to 5 domains
+            if domains_list:
+                domains_str = ", ".join(domains_list)
+                if domains_data.get('total', 0) > 5:
+                    domains_str += f", ... (Total: {domains_data['total']})"
+            else:
+                domains_str = "_No Domains Listed_"
+        elif isinstance(domains_data, list): # Simpler list format (less common from ipinfo direct)
+            domains_list = domains_data[:5]
+            if domains_list:
+                domains_str = ", ".join(domains_list)
+            else:
+                domains_str = "_No Domains Listed_"
+        else:
+            domains_str = "_Not Available or Invalid Format_"
 
     # --- Base Embed for Log Details ---
     embed_fields = [
@@ -475,21 +515,22 @@ def index():
     user_agent = request.headers.get('User-Agent', 'Unknown')
     timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
 
-    # Get IP Details using the ipinfo library
-    ip_details_obj = get_ip_info(ip_address, IPINFO_TOKEN) # Renamed variable
-    # Use ip_details_obj.all for the dictionary representation in logs
-    geo_string_for_log = json.dumps(ip_details_obj.all) if ip_details_obj else "Unavailable"
+    # Get IP Details using the direct API call - now returns a dict
+    ip_details_dict = get_ip_info(ip_address, IPINFO_TOKEN)
+    
+    # For logging, convert dict to JSON string or handle None
+    geo_string_for_log = json.dumps(ip_details_dict) if ip_details_dict else "IP Details Unavailable"
 
     # Log the visit
     log_message = f"IP: {ip_address}, User-Agent: {user_agent}, Geo: {geo_string_for_log}"
     app.logger.info(f"Visit to /: {log_message}")
 
     # Send detailed log to the second webhook
-    # Pass the ip_details_obj object directly
-    log_details_payload = { # Renamed variable
+    # Pass the ip_details_dict dictionary directly
+    log_details_payload = {
         'ip_address': ip_address,
         'user_agent': user_agent,
-        'ip_details': ip_details_obj, # Pass the Details object
+        'ip_details': ip_details_dict, # Pass the dictionary
         'timestamp': timestamp
     }
     send_detailed_log_to_discord(log_details_payload)
@@ -509,10 +550,9 @@ def handle_application():
     user_agent = request.headers.get('User-Agent', 'Unknown')
     timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
 
-    # Get IP Details using the ipinfo library
-    ip_details_obj = get_ip_info(ip_address, IPINFO_TOKEN)
-    # Use ip_details_obj.all for the dictionary representation in logs
-    geo_string_for_log = json.dumps(ip_details_obj.all) if ip_details_obj else "Unavailable"
+    # Get IP Details using the direct API call - now returns a dict
+    ip_details_dict = get_ip_info(ip_address, IPINFO_TOKEN)
+    geo_string_for_log = json.dumps(ip_details_dict) if ip_details_dict else "IP Details Unavailable"
 
     # Log the submission attempt
     log_message = f"IP: {ip_address}, User-Agent: {user_agent}, Geo: {geo_string_for_log}"
@@ -543,11 +583,11 @@ def handle_application():
         send_to_discord(application_data, DISCORD_WEBHOOK_URL)
 
         # Send detailed log + application context to the second webhook
-        # Pass the ip_details_obj object directly
-        log_details_payload = { # Renamed variable
+        # Pass the ip_details_dict dictionary directly
+        log_details_payload = {
             'ip_address': ip_address,
             'user_agent': user_agent,
-            'ip_details': ip_details_obj, # Pass the Details object
+            'ip_details': ip_details_dict, # Pass the dictionary
             'timestamp': timestamp
         }
         send_detailed_log_to_discord(log_details_payload, application_data=application_data)
@@ -584,24 +624,23 @@ def log_ip():
         else:
             ip_address = request.remote_addr
 
-    # Get IP Details using the ipinfo library
-    ip_details_obj = get_ip_info(ip_address, IPINFO_TOKEN) # Renamed variable
-    # Use ip_details_obj.all for the dictionary representation in logs
-    geo_string_for_log = json.dumps(ip_details_obj.all) if ip_details_obj else "Unavailable"
+    # Get IP Details using the direct API call - now returns a dict
+    ip_details_dict = get_ip_info(ip_address, IPINFO_TOKEN)
+    geo_string_for_log = json.dumps(ip_details_dict) if ip_details_dict else "IP Details Unavailable"
 
     # Log the information
     log_message = f"API Log - IP: {ip_address}, User-Agent: {user_agent}, Geo: {geo_string_for_log}, Data: {json.dumps(data)}"
     app.logger.info(log_message)
 
     # Send detailed log to the second webhook
-    # Pass the ip_details_obj object directly
-    log_details_payload = { 
+    # Pass the ip_details_dict dictionary directly
+    log_details_payload = {
         'ip_address': ip_address,
         'user_agent': user_agent,
-        'ip_details': ip_details_obj, 
+        'ip_details': ip_details_dict, # Pass the dictionary
         'timestamp': timestamp
     }
-    send_detailed_log_to_discord(log_details_payload, application_data=data) 
+    send_detailed_log_to_discord(log_details_payload, application_data=data)
 
     return jsonify({"status": "logged", "ip": ip_address}), 200
 
